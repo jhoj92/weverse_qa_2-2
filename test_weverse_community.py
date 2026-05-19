@@ -6,6 +6,7 @@ from weverse_community_page import WeverseCommunityPage
 load_dotenv()
 
 def test_weverse_post(page):
+    print("테스트 시작: 로그인 및 포스트 등록, 수정, 삭제")
     community_page = WeverseCommunityPage(page)
     
     # 0. 테스트 데이터 불러오기
@@ -16,7 +17,7 @@ def test_weverse_post(page):
     print("\n1. 인증코드 입력 대기 중...")
     community_page.login(test_id, test_pw)
     community_page.enter_and_join_community()
-    print("\n2. 커뮤니티 가입 완료 및 프로필 엔드 진입 중...")
+    print("2. 커뮤니티 가입 완료 및 프로필 엔드 진입 중...")
     
     # 2.미디어 파일 경로 변환(assets 폴더 기준)
     image_file = str(pathlib.Path("assets/Test_Image.jpg").absolute())
@@ -26,18 +27,18 @@ def test_weverse_post(page):
     initial_msg = "이미지 포스팅"
     community_page.write_post_with_image(initial_msg, image_file)
     assert page.get_by_text(initial_msg).is_visible()
-    print("\n3. 포스트 등록 완료 및 수정 진행 중...")
+    print("3. 포스트 등록 완료 및 수정 진행 중...")
     
     # 4. 포스트 수정 (이미지 삭제 → 비디오 교체)
     edited_msg = "비디오 교체"
     community_page.modify_post_with_video(edited_msg, video_file)
     assert page.get_by_text(edited_msg).is_visible()
-    print("\n4. 포스트 수정 및 삭제 진행 중...")
+    print("4. 포스트 수정 및 삭제 진행 중...")
     
     # 5. 포스트 삭제
     community_page.remove_post()
-    page.wait_for_timeout(2000) # 삭제 처리 애니메이션 대기
-    print("\n5. 포스트 삭제 완료 및 최종 결과 도출")
+    page.wait_for_timeout(2000) # 삭제 처리 대기
+    print("5. 포스트 삭제 완료 및 최종 결과 도출")
     
     assert community_page.no_post_message.is_visible()
     print("\n==============================")
